@@ -1,0 +1,222 @@
+/* Base Setup */
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background: url('https://images.unsplash.com/photo-1628771065518-0e2e625d6c31?auto=format&fit=crop&w=1024&q=80') center center no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    position: relative;
+  }
+  
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+  }
+  
+  /* Neon Flicker Effect */
+  .flicker-neon {
+    font-size: 2.2rem;
+    color: #ff00cc;
+    text-align: center;
+    text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff3399;
+    animation: flicker 2s infinite;
+    z-index: 2;
+    position: relative;
+  }
+  
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+    }
+    20%, 24%, 55% {
+      opacity: 0.3;
+    }
+  }
+  
+  /* Neon Button */
+  .neon-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 20px 40px;
+    color: #fff;
+    border: 3px solid #0ff;
+    border-radius: 15px;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px #0ff, 0 0 30px #0ff;
+    transition: 0.3s;
+  }
+  
+  .neon-button:hover {
+    box-shadow: 0 0 20px #f0f, 0 0 60px #f0f;
+    border-color: #f0f;
+  }
+  
+  /* Border Lights */
+  .border-lights {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    padding: 20px;
+    box-shadow:
+      0 0 15px red,
+      0 0 25px yellow,
+      inset 0 0 20px cyan;
+    animation: flash-border 2s infinite alternate;
+    z-index: 1;
+  }
+  
+  @keyframes flash-border {
+    from {
+      box-shadow: 0 0 15px red, 0 0 25px yellow, inset 0 0 20px cyan;
+    }
+    to {
+      box-shadow: 0 0 30px lime, 0 0 40px magenta, inset 0 0 40px blue;
+    }
+  }
+  
+  /* Arcade Container */
+  .arcade-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding-top: 80px;
+  }
+  
+  /* Leaderboard */
+  .leaderboard {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 3px solid #ff00cc;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #ff00cc;
+    padding: 20px;
+    z-index: 3;
+    text-align: left;
+  }
+  
+  .leaderboard h2 {
+    font-size: 1rem;
+    color: #fff600;
+    text-shadow: 0 0 5px #fff600;
+    margin-bottom: 15px;
+  }
+  
+  .leaderboard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .leaderboard li {
+    font-size: 0.8rem;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .blink {
+    animation: blink 1s step-start infinite;
+  }
+  
+  @keyframes blink {
+    50% {
+      opacity: 0.1;
+    }
+  }
+  
+  /* Slot Reels */
+  .slot-machine {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    gap: 15px;
+    z-index: 2;
+    position: relative;
+  }
+  
+  .reel {
+    background: rgba(0, 0, 0, 0.5);
+    border: 3px solid #0ff;
+    padding: 20px;
+    font-size: 1.5rem;
+    color: #fff;
+    animation: spinReel 2s linear infinite;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+  }
+  
+  @keyframes spinReel {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+  
+  /* Coin Rain */
+  .coin::before {
+    content: "💰";
+    font-size: 2rem;
+    position: absolute;
+    animation: drop 3s linear infinite;
+    left: calc(50% - 1rem);
+    top: -50px;
+  }
+  
+  @keyframes drop {
+    0% {
+      transform: translateY(-50px);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh);
+      opacity: 0;
+    }
+  }
+  
+
+  #coin-container .coin {
+    position: absolute;
+    top: -50px;
+    font-size: 2rem;
+    color: gold;
+    animation: coinDrop 3s linear infinite;
+    z-index: 2;
+  }
+  
+  @keyframes coinDrop {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+  
+
+  .name {
+    color: #0ff;
+    font-weight: bold;
+    text-shadow: 0 0 5px #0ff;
+  }
+  
+  .score {
+    color: #ff00f2;
+    font-weight: bold;
+    text-shadow: 0 0 5px #fff600;
+  }
+  
