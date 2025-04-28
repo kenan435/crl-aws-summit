@@ -7,6 +7,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { S3UploadService } from '../services/s3-upload.service';
 import { QrCodeService } from '../services/qr-code.service';
+import { uploadData } from 'aws-amplify/storage';
 
 
 

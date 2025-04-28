@@ -9,10 +9,10 @@ import { ModuleSelectionComponent } from './module-selection/module-selection.co
 import { QuizComponent } from './quiz/quiz.component';
 import { RegistrationComponent, UserRegistration } from './registration/registration.component';
 
-// import outputs from '../../amplify_outputs.json';
+import outputs from '../../amplify_outputs.json';
 
 
-// Amplify.configure(outputs);
+Amplify.configure(outputs);
 
 // Amplify.configure({
 //   Auth: {
