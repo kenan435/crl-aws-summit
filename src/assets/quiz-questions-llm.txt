@@ -1,0 +1,11 @@
+Does your design include protection against manipulating model responses through specific inputs that could alter its behavior or bypass safety measures?|true
+Does your LLM implementation include safeguards to prevent sensitive data exposure through model responses?|true
+Do you implement security controls to protect against third-party components and training data supply chain risks?|true
+Do you implement security controls to protect against manipulation of training, fine-tuning, and embedding data used in your AI system?|false
+Does your system apply output encoding controls to neutralize potentially harmful AI-generated content before user presentation?|false
+Do you maintain security controls to validate, sanitize, and monitor AI outputs before allowing interaction with other system components?|true
+Do you limit the degree of autonomy given to your AI system by restricting its available actions and capabilities?|true
+Do you ensure system prompts in your AI service exclude sensitive data, information, or security controls and are not used for access control?|false
+Do you maintain security measures for both generation and storage of vector embedding?|true
+Do you implement verification controls to detect and prevent AI-generated content hallucinations?|false
+Does your system include safeguards against unlimited AI model queries and excessive resource consumption?|true

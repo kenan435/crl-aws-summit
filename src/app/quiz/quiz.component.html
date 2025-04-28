@@ -1,0 +1,92 @@
+<div class="quiz-container">
+    <h2>{{ moduleName }} Quiz</h2>
+    
+    <!-- Welcome message with user name -->
+    <div class="user-info">
+      <p>Welcome, {{ userInfo.firstName }} {{ userInfo.lastName }}</p>
+    </div>
+    
+    <div *ngIf="loading" class="loading">
+      <p>Loading questions...</p>
+    </div>
+    
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button class="back-btn" (click)="exitToModuleSelection()">Back to Module Selection</button>
+    </div>
+    
+    <div *ngIf="!loading && !error">
+      <div *ngIf="!quizCompleted && questions.length > 0" class="question-container">
+        <div class="progress">
+          <span>Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(currentQuestionIndex + 1) / questions.length * 100"></div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <h3>{{ currentQuestion?.text }}</h3>
+          <div class="buttons">
+            <button (click)="answerQuestion(true)" class="yes-btn">Yes</button>
+            <button (click)="answerQuestion(false)" class="no-btn">No</button>
+          </div>
+          
+          <!-- Abort Test button -->
+          <div class="abort-container">
+            <button (click)="confirmAbort()" class="abort-btn">Abort Test</button>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="quizCompleted" class="results">
+        <h3>Quiz Completed!</h3>
+        
+        <!-- Show user info in results -->
+        <div class="user-result-info">
+          <p><strong>Name:</strong> {{ userInfo.firstName }} {{ userInfo.lastName }}</p>
+          <p><strong>Company:</strong> {{ userInfo.company }}</p>
+        </div>
+        
+        <p>Your score: {{ score }} out of {{ questions.length }}</p>
+        <p>{{ score / questions.length | percent }} correct</p>
+        
+        <!-- PDF Export Button -->
+        <div class="export-section">
+          <button (click)="exportResultsAsPDF()" class="export-btn">
+            <i class="pdf-icon">📄</i> Download Results as PDF
+          </button>
+        </div>
+        
+        <div class="answers-review">
+          <h4>Review your answers:</h4>
+          <div *ngFor="let question of questions" class="question-review">
+            <p [ngClass]="{'correct': question.userAnswer === question.correctAnswer, 
+                          'incorrect': question.userAnswer !== question.correctAnswer}">
+              {{ question.id }}. {{ question.text }}
+            </p>
+            <div class="answer-details">
+              <p>Your answer: <strong>{{ question.userAnswer ? 'Yes' : 'No' }}</strong></p>
+              <p>Correct answer: <strong>{{ question.correctAnswer ? 'Yes' : 'No' }}</strong></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="buttons">
+          <button (click)="resetQuiz()" class="reset-btn">Try Again</button>
+          <button (click)="exitToModuleSelection()" class="back-btn">Back to Module Selection</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Confirmation Dialog for Aborting -->
+    <div *ngIf="showAbortConfirmation" class="confirmation-overlay">
+      <div class="confirmation-dialog">
+        <h3>Abort Quiz?</h3>
+        <p>Are you sure you want to abort this quiz? Your progress will be lost.</p>
+        <div class="buttons">
+          <button (click)="abortQuiz()" class="yes-btn">Yes, Abort</button>
+          <button (click)="cancelAbort()" class="no-btn">No, Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>

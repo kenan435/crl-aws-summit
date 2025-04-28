@@ -1,0 +1,10 @@
+Is Angular developed by Google?|true
+Is Angular written in TypeScript?|true
+Does Angular use a Virtual DOM like React?|false
+Is two-way binding written as [(ngModel)]?|true
+Are Angular components reusable?|true
+Does Angular come with built-in form validation?|true
+Is Angular primarily for mobile development?|false
+Does Angular use directives?|true
+Is NgRx used for state management in Angular?|true
+Must all Angular applications use modules?|false

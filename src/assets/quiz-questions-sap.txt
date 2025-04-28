@@ -1,0 +1,10 @@
+Is SAP an ERP system?|true
+Does SAP HANA use in-memory database technology?|true
+Is SAP S/4HANA the successor to SAP R/3?|true
+Can SAP only be deployed on-premises?|false
+Is ABAP the only programming language used in SAP development?|false
+Is SAP Fiori a database technology?|false
+Does SAP include modules for HR management?|true
+Is SAP SuccessFactors a cloud-based HR solution?|true
+Does SAP support multiple currencies?|true
+Is SAP BW a reporting and data warehousing tool?|true

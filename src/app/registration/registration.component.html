@@ -1,0 +1,66 @@
+<div class="registration-container">
+    <h2>Register to Start Quiz</h2>
+    <p>Please provide your information to begin the quiz</p>
+    
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+      <div class="form-group">
+        <label for="firstName">First Name *</label>
+        <input 
+          type="text" 
+          formControlName="firstName" 
+          id="firstName" 
+          [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+        />
+        <div *ngIf="submitted && f['firstName'].errors" class="error-message">
+          <div *ngIf="f['firstName'].errors['required']">First name is required</div>
+          <div *ngIf="f['firstName'].errors['minlength']">First name must be at least 2 characters</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="lastName">Last Name *</label>
+        <input 
+          type="text" 
+          formControlName="lastName" 
+          id="lastName" 
+          [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+        />
+        <div *ngIf="submitted && f['lastName'].errors" class="error-message">
+          <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
+          <div *ngIf="f['lastName'].errors['minlength']">Last name must be at least 2 characters</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="company">Company *</label>
+        <input 
+          type="text" 
+          formControlName="company" 
+          id="company" 
+          [ngClass]="{ 'is-invalid': submitted && f['company'].errors }"
+        />
+        <div *ngIf="submitted && f['company'].errors" class="error-message">
+          <div *ngIf="f['company'].errors['required']">Company is required</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input 
+          type="email" 
+          formControlName="email" 
+          id="email" 
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="error-message">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Please enter a valid email address</div>
+        </div>
+      </div>
+      
+      <div class="form-buttons">
+        <button type="submit" class="submit-btn">Register & Start Quiz</button>
+        <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>

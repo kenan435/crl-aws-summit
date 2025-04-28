@@ -1,0 +1,11 @@
+<div class="module-selection-container">
+    <h2>Select a Quiz Module</h2>
+    
+    <div class="modules-grid">
+      <div *ngFor="let module of quizModules" class="module-card" (click)="selectModule(module.id)">
+        <h3>{{ module.name }}</h3>
+        <p>{{ module.description }}</p>
+        <button class="start-btn">Start Quiz</button>
+      </div>
+    </div>
+  </div>
