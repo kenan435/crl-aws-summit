@@ -9,10 +9,24 @@ import { ModuleSelectionComponent } from './module-selection/module-selection.co
 import { QuizComponent } from './quiz/quiz.component';
 import { RegistrationComponent, UserRegistration } from './registration/registration.component';
 
-//import outputs from '../../amplify_outputs.json';
+// import outputs from '../../amplify_outputs.json';
 
 
-//Amplify.configure(outputs);
+// Amplify.configure(outputs);
+
+// Amplify.configure({
+//   Auth: {
+//     identityPoolId: 'eu-central-1:7f908f61-4b65-4610-ba22-8c95c2380c63', // Replace with your actual identity pool ID
+//     region: 'eu-central-1'  // Replace with your actual region
+//   },
+//   Storage: {
+//     AWSS3: {
+//       bucket: 'crl-aws-summit-hamburg-files', // Replace with your actual bucket name
+//       region: 'eu-central-1',        // Replace with your actual region
+//     }
+//   }
+// } as any); // Type assertion to avoid TypeScript errors
+
 
 @Component({
   selector: 'app-root',

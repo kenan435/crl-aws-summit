@@ -1,8 +1,6 @@
-// services/s3-upload.service.ts
 import { Injectable } from '@angular/core';
-import { S3Client } from '@aws-sdk/client-s3';
-import { Upload } from '@aws-sdk/lib-storage';
-import { Observable, from } from 'rxjs';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 @Injectable({
   providedIn: 'root'
@@ -10,43 +8,56 @@ import { Observable, from } from 'rxjs';
 export class S3UploadService {
   private s3Client: S3Client;
   private bucketName: string;
+  private region: string;
 
   constructor() {
-    // AWS Configuration - REPLACE THESE VALUES with your actual AWS details
-    const awsRegion = 'us-east-1'; // Your AWS region
-    this.bucketName = 'your-bucket-name'; // Your S3 bucket name
+    // Replace these with your actual S3 details
+    this.region = 'us-east-1'; 
+    this.bucketName = 'your-aws-summit-quiz-bucket'; 
     
-    // Initialize S3 client
     this.s3Client = new S3Client({
-      region: awsRegion,
-      // IMPORTANT: Replace with your actual AWS credentials or use other authentication methods
+      region: this.region,
       credentials: {
-        accessKeyId: 'YOUR_AWS_ACCESS_KEY',
-        secretAccessKey: 'YOUR_AWS_SECRET_KEY'
+        accessKeyId: 'YOUR_ACCESS_KEY_ID',
+        secretAccessKey: 'YOUR_SECRET_ACCESS_KEY'
       }
     });
   }
 
-  /**
-   * Upload a file to S3 bucket
-   * @param file File buffer to upload
-   * @param fileName Name to use for the file in S3
-   * @param contentType MIME type of the file
-   * @returns Observable that completes when upload is done
-   */
-  uploadToS3(file: ArrayBuffer, fileName: string, contentType: string): Observable<any> {
-    // Create an upload task
-    const upload = new Upload({
-      client: this.s3Client,
-      params: {
+  async uploadPdfBlob(pdfBlob: Blob, userId: string): Promise<string> {
+    try {
+      // Convert blob to array buffer
+      const arrayBuffer = await pdfBlob.arrayBuffer();
+      
+      // Create a unique filename with user ID and timestamp
+      const fileName = `quiz-result-\${userId}-\${Date.now()}.pdf`;
+      
+      const command = new PutObjectCommand({
         Bucket: this.bucketName,
         Key: fileName,
-        Body: file,
-        ContentType: contentType
-      }
+        Body: new Uint8Array(arrayBuffer),
+        ContentType: 'application/pdf',
+        ContentDisposition: 'attachment; filename="aws-summit-quiz-results.pdf"',
+        CacheControl: 'max-age=86400'
+      });
+      
+      await this.s3Client.send(command);
+      
+      // Return a signed URL that works for mobile devices
+      return this.getSignedDownloadUrl(fileName);
+    } catch (err) {
+      console.error('Error uploading to S3:', err);
+      throw err;
+    }
+  }
+  
+  async getSignedDownloadUrl(fileName: string): Promise<string> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: fileName
     });
-
-    // Return an observable that completes when the upload is done
-    return from(upload.done());
+    
+    // URL valid for 7 days
+    return getSignedUrl(this.s3Client, command, { expiresIn: 604800 });
   }
 }

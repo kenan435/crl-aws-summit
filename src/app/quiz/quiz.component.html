@@ -57,6 +57,20 @@
           </button>
         </div>
         
+        <div *ngIf="isGeneratingPdf" class="loading-indicator">
+            <p>Preparing your certificate for download...</p>
+            <!-- Add a loading spinner if you have one -->
+          </div>
+
+          <div *ngIf="qrCodeDataUrl" class="qr-code-container">
+            <h3>Scan to Download Your Certificate</h3>
+            <p>Use your phone camera to scan this QR code</p>
+            <img [src]="qrCodeDataUrl" alt="QR Code for PDF download" class="qr-code">
+            <p class="direct-link">
+              Or <a [href]="pdfUrl" target="_blank">click here</a> to download directly.
+            </p>
+          </div>
+          
         <div class="answers-review">
           <h4>Review your answers:</h4>
           <div *ngFor="let question of questions" class="question-review">
@@ -77,6 +91,11 @@
         </div>
       </div>
     </div>
+
+    <div *ngIf="qrCodeDataUrl" class="qr-container">
+        <h3>Scan to Download Your Results</h3>
+        <img [src]="qrCodeDataUrl" alt="QR Code for PDF download">
+      </div>
     
     <!-- Confirmation Dialog for Aborting -->
     <div *ngIf="showAbortConfirmation" class="confirmation-overlay">

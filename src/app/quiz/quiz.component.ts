@@ -6,6 +6,8 @@ import { UserRegistration } from '../registration/registration.component';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { S3UploadService } from '../services/s3-upload.service';
+import { QrCodeService } from '../services/qr-code.service';
+
 
 
 @Component({
@@ -20,6 +22,9 @@ export class QuizComponent implements OnInit {
   @Input() userInfo!: UserRegistration;
   @Output() quizExit = new EventEmitter<void>();
   
+
+  qrCodeDataUrl: string | null = null;
+
   questions: QuizQuestion[] = [];
   currentQuestionIndex = 0;
   quizCompleted = false;
@@ -27,6 +32,10 @@ export class QuizComponent implements OnInit {
   loading = true;
   error = '';
   moduleName = '';
+
+  // QR code related properties
+pdfUrl: string | null = null;
+isGeneratingPdf = false;
   
 // Add upload status properties
 uploadStatus: 'idle' | 'uploading' | 'success' | 'error' = 'idle';
@@ -37,7 +46,8 @@ uploadErrorMessage = '';
 
   constructor(
     private quizService: QuizService,
-    private s3UploadService: S3UploadService) {}
+    private s3UploadService: S3UploadService,
+    private qrCodeService: QrCodeService) {}
 
   ngOnInit(): void {
     if (this.moduleId) {
@@ -51,6 +61,40 @@ uploadErrorMessage = '';
       this.loading = false;
     }
   }
+
+
+  // Add this method to your component
+async generateQRCodeForResults(): Promise<void> {
+  this.isGeneratingPdf = true;
+  
+  try {
+    // Get the PDF blob from your existing PDF generation function
+    // If you're already using jsPDF, you might have something like:
+    const doc = new jsPDF();
+    
+    // Add your content to the PDF (similar to what you're already doing)
+    doc.text('AWS Summit Quiz Results', 20, 20);
+    // Add other content to the PDF...
+
+    // Convert to blob
+    const pdfBlob = doc.output('blob');
+    
+    // Create a unique filename
+    const fileName = `aws-quiz-result-\${Date.now()}.pdf`;
+    
+    // Upload to S3
+    const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+    this.pdfUrl = await this.s3UploadService.uploadPdfBlob(file, fileName);
+    
+    // Generate QR code
+    this.qrCodeDataUrl = await this.qrCodeService.generateQRCode(this.pdfUrl);
+    
+    this.isGeneratingPdf = false;
+  } catch (error) {
+    console.error('Error generating or uploading PDF:', error);
+    this.isGeneratingPdf = false;
+  }
+}
 
   loadQuestions(): void {
     this.quizService.loadQuestionsForModule(this.moduleId).subscribe({
@@ -78,6 +122,7 @@ uploadErrorMessage = '';
     } else {
       this.calculateScore();
       this.quizCompleted = true;
+      this.generateQRCodeForResults();
     }
   }
 
